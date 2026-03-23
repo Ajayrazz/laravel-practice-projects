@@ -173,3 +173,12 @@ Route::get('/jsondata', function() {
     ->header('Content-Type', 'application/json')
     ->setStatusCode(200);
 });
+
+//views with header
+Route::get('/viewwithheader', function() {
+    return response()->view('test1', ['name' => 'Ajay Kumar'])
+    ->header('X-Custom-Header', 'CustomValue')
+    ->header('X-Another-Header', 'AnotherValue')
+    ->header('Content-Type', 'text/html')
+    ->setStatusCode(200);
+});
