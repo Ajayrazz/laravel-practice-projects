@@ -139,3 +139,37 @@ Route::get('/matchDetails', function () {
 
 //Redirecting to externaml URL
 Route::redirect('/google', 'https://www.google.com');
+
+Route::get('/redirectroute', function() {
+    return redirect() -> away('https://www.google.com');
+});
+
+//Attaching header
+Route::get('/hom', function() {
+    return response('Hello this is laravel', 200) -> header('Content-Type', 'text/plain');
+});
+
+
+//multiple headers
+Route::get('/multipleheaders', function() {
+    return response('Hello this is laravel', 200)
+        ->header('Content-Type', 'text/plain')
+        ->header('X-Custom-Header', 'CustomValue')
+        ->header('X-Another-Header', 'AnotherValue');
+});
+
+//json data
+Route::get('/jsondata', function() {
+    $data = [
+        'name' => 'Ajay Kumar',
+        'reg_no' => '2023CSE001',
+        'course' => 'B.Tech CSE',
+        'year' => '3rd Year'
+    ];
+
+    return response()->json($data)
+    ->header('X-Custom-Header', 'CustomValue')
+    ->header('X-Another-Header', 'AnotherValue')
+    ->header('Content-Type', 'application/json')
+    ->setStatusCode(200);
+});
