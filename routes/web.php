@@ -182,3 +182,10 @@ Route::get('/viewwithheader', function() {
     ->header('Content-Type', 'text/html')
     ->setStatusCode(200);
 });
+
+
+//working with cookies
+Route::get('/setcookie', function() {
+    return response('Cookie has been set')
+    ->cookie('username', 'Ajay Kumar', 60); // Cookie valid for 60 minutes
+});
