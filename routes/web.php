@@ -2,6 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
+//for controller -> so that we can controller
+use App\Http\Controllers\UserController;
+
+//invoke controller
+use App\Http\Controllers\HelloController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -189,3 +195,20 @@ Route::get('/setcookie', function() {
     return response('Cookie has been set')
     ->cookie('username', 'Ajay Kumar', 60); // Cookie valid for 60 minutes
 });
+
+
+
+
+//controller
+
+Route::get('/user', [UserController::class, 'index']);
+
+Route::get('/user/{id}', [UserController::class, 'show']);
+
+
+Route::get('/hello', HelloController::class);
+
+
+
+//invoke controller route
+Route::get('/x', HelloController::class);
