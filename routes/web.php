@@ -212,3 +212,133 @@ Route::get('/hello', HelloController::class);
 
 //invoke controller route
 Route::get('/x', HelloController::class);
+
+
+//student controller
+
+Route::get('/student', [StudentController::class, 'showStudentDetails']);
+
+Route::get('/student/form', function() {
+    return view('Studentform');
+});
+
+Route::post('/student/store', [StudentController::class, 'store']);
+
+
+//registration form
+Route::get('/form', function() {
+    return view('form');
+});
+
+Route::post('/submit-form', [StudentController::class, 'submit']);
+
+//layout
+Route::get('/layout-page', function() {
+    return view('layout');
+});
+
+//home page
+Route::get('/home-page', function() {
+    return view('home');
+});
+
+
+//url generation
+//current url
+Route::get('/current', function(){
+    return url()->current();
+});
+
+//framework url
+Route::get('/framework', function() {
+    echo url('/about2');
+    echo "<br>";
+    echo url('/contact2');
+});
+
+Route::get('/about2', function() {
+    return "This is the about page.";
+});
+
+Route::get('/contact2', function() {
+    return "This is the contact page.";
+});
+
+
+//ASSETS URL
+Route::get('/assets', function() {
+    return '<img src="' . asset('image/scrn-img.jpg') . '" alt="Sample Image">';
+});
+
+
+//form route
+Route::get('/form', function() {
+    return view('form');
+});
+
+
+//Student form route
+Route::get('/studentform', function() {
+    return view('Studentform');
+});
+
+
+//Domain routing
+Route::domain('admin.lvh.me')->group(function() {
+    Route::get('/admin', function() {
+        return "Welcome to the admin dashboard!";
+    });
+});
+
+//Dynamic Subdomain Routing
+Route::domain('{account}.lvh.me')->group(function() {
+    Route::get('/admin', function($account) {
+        return "Welcome to the dashboard of account: " . $account;
+    });
+});
+
+
+
+//we are having an array of object which is having the url of the different images,
+//whenever user will click the url of the image, it will display the image in different
+//route
+
+//step 1 - create controller first using command -> php artisan make:controller ImageController
+//step 2 - create a method in the controller which will return the view of the image
+//step 3 - create a view for the image -> destination.blade.php
+//step 4 - create a route for the image and return the view of the image in the route
+
+use App\Http\Controllers\ImageController;
+
+
+Route::get('/images', function() {
+    $images = [
+        ['name' => 'Image 1', 'url' => url('/image1')],
+        ['name' => 'Image 2', 'url' => url('/image2')],
+        ['name' => 'Image 3', 'url' => url('/image3')],
+    ];
+    return view('images', compact('images'));
+}); 
+
+// ARRAY AND IMAGES
+Route::get('destinations', [ImageController::class, 'index']);
+Route::get('destination/{id}', [ImageController::class, 'show']);
+
+
+//Task - list a course namae like Btech, BBA, BCA, MBA, MTech in a 
+//view and whenever user click on the course name, it will display 
+// the fee of the course in different route. Create a controller for 
+// the course and create a view for the course details. Use array 
+// to store the course details and display the details in the view.
+
+
+//step to do this task
+//1. create a controller using command -> php artisan make:controller CourseController
+//2. create a method in the controller which will return the view of the course details
+//3. create a view for the course details -> course.blade.php
+//4. create a route for the course and return the view of the course details in the route
+
+use App\Http\Controllers\CourseController;
+
+Route::get('/courses', [CourseController::class, 'index']);
+Route::get('/courses/{id}', [CourseController::class, 'show']);
