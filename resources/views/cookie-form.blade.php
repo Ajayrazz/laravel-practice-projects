@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Form</title>
+    <title>Document</title>
 </head>
 <body>
-    <h1>Student Registration Form</h1>
+    <h1>Registration Form</h1>
 
     @if($errors->any())
     <div style="color:red; border:1px solid red; padding:10px;">

@@ -277,12 +277,6 @@ Route::get('/form', function() {
 });
 
 
-//Student form route
-Route::get('/studentform', function() {
-    return view('Studentform');
-});
-
-
 //Domain routing
 Route::domain('admin.lvh.me')->group(function() {
     Route::get('/admin', function() {
@@ -311,14 +305,14 @@ Route::domain('{account}.lvh.me')->group(function() {
 use App\Http\Controllers\ImageController;
 
 
-Route::get('/images', function() {
-    $images = [
-        ['name' => 'Image 1', 'url' => url('/image1')],
-        ['name' => 'Image 2', 'url' => url('/image2')],
-        ['name' => 'Image 3', 'url' => url('/image3')],
-    ];
-    return view('images', compact('images'));
-}); 
+// Route::get('/images', function() {
+//     $images = [
+//         ['name' => 'Image 1', 'url' => url('/image1')],
+//         ['name' => 'Image 2', 'url' => url('/image2')],
+//         ['name' => 'Image 3', 'url' => url('/image3')],
+//     ];
+//     return view('images', compact('images'));
+// }); 
 
 // ARRAY AND IMAGES
 Route::get('destinations', [ImageController::class, 'index']);
@@ -342,3 +336,127 @@ use App\Http\Controllers\CourseController;
 
 Route::get('/courses', [CourseController::class, 'index']);
 Route::get('/courses/{id}', [CourseController::class, 'show']);
+
+
+//form-validation
+use App\Http\Controllers\StudentController;
+
+Route::get('/studentform', function () {
+    return view('form');
+});
+
+Route::post('/students/store', [StudentController::class, 'store']);
+
+
+//cookie
+Route::get('/', function(){
+    return view('cookie-form');
+});
+
+Route::post('/setcookie', function(Request $request) {
+    $name = $request->input('name');
+    return response('Cookie has been set')->cookie('username', $name, 60);
+});
+
+Route::get('/getcookie', function(Request $request) {
+    $name = $request->cookie('username');
+    return "The value of the cookie 'username' is: " . $name;
+});
+
+Route::get('/deletecookie', function() {
+    return response('Cookie has been deleted')->cookie('username', '', -1);
+});
+
+
+//Task - Set a cookies for the product , cookie will hold the name of the the product and set it for 30 minutes.
+Route::get('/setproductcookie', function(Request $request) {
+    $productName = $request->input('product');
+    return response('Product cookie has been set')->cookie('product_name', $productName, 30);
+});
+
+Route::get('/getproductcookie', function(Request $request) {
+    $productName = $request->cookie('product_name');
+    return "The value of the cookie 'product_name' is: " . $productName;
+});
+
+Route::get('/deleteproductcookie', function() {
+    return response('Product cookie has been deleted')->cookie('product_name', '', -1);
+});
+
+
+Route::get('/set-session', function(Request $request) {
+    $request->session()->put('username', 'Ajay Kumar');
+    return "Session has been set.";
+});
+
+Route::get('/get-session', function(Request $request) {
+    $username = $request->session()->get('username');
+    return "The value of the session 'username' is: " . $username;
+});
+
+Route::get('/delete-session', function(Request $request) {
+    $request->session()->forget('username');
+    return "Session has been deleted.";
+});
+
+
+//Task - create a form to work with session of a social media platform, 
+//username and password of user should be stored in the session
+
+Route::get('/social-login', function() {
+    return view('social-login');
+});
+
+Route::post('/social-login', function(Request $request) {
+    $username = $request->input('username');
+    $password = $request->input('password');
+
+    // Store username and password in session
+    $request->session()->put('social_username', $username);
+    $request->session()->put('social_password', $password);
+
+    return "Social media login session has been set.";
+});
+
+Route::get('/social-session', function(Request $request) {
+    $username = $request->session()->get('social_username');
+    $password = $request->session()->get('social_password');
+
+    return "Social media session - Username: " . $username . ", Password: " . $password;
+});
+
+Route::get('/social-logout', function(Request $request) {
+    $request->session()->forget('social_username');
+    $request->session()->forget('social_password');
+    return "Social media session has been deleted.";
+});
+
+Route::get('/file-upload', function() {
+    return view('file-upload');
+});
+
+Route::get('/show', function(Request $request) {
+    session(['username' => $request->input('username')]);
+    $cookie = Cookie::make('username', $request->input('username'), 60);
+    return "Username stored in session: " . session('username');
+});
+
+
+//workin with mail
+use App\Http\Controllers\MailController;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\testMail;
+
+
+
+
+
+// databases
+use App\Http\Controllers\EmployeeController;
+Route::get('/employees', [EmployeeController::class, 'index']);
+Route::get('/employees/create', [EmployeeController::class, 'create']);
+Route::post('/employees/store', [EmployeeController::class, 'store']);
+Route::get('/employees/edit/{id}', [EmployeeController::class, 'edit']);
+Route::post('/employees/update/{id}', [EmployeeController::class, 'update']);
+Route::get('/employees/delete/{id}', [EmployeeController::class, 'delete']);
+
